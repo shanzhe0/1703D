@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cms.dao.StoreDao">
+	
+	<select id="liststore" resultMap="storeMap">
+		select * from store
+		<where>
+			<if test="sname!=null and sname!=''">
+				and sname like '%${sname}%'
+			</if>
+		</where>
+	</select>
+	
+	<resultMap type="Store" id="storeMap">
+		<id property="sid" column="sid"/>
+		<result property="sname" column="sname"/>
+		<result property="sprice" column="sprice"/>
+		<result property="sbate" column="sbate"/>
+		<collection property="pops" ofType="Pop" javaType="java.util.List" select="findMainById" column="sid"></collection>
+	</resultMap>
+	
+	<select id="findMainById" parameterType="int" resultType="Pop">
+		select pop.*,main.* from pop join main on main.pid=pop.pid where main.sid=#{sid}
+	</select>
+	
+	
+	
+</mapper>      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
